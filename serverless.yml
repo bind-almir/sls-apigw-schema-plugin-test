@@ -1,0 +1,90 @@
+service: sls-apigw-schema-plugin-test
+
+frameworkVersion: '^3.0.0'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev
+  region: us-east-1
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    DYNAMODB_TABLE: ${self:service}-${self:provider.stage}
+  deploymentBucket:
+    name: almir-deployment-bucket
+    serverSideEncryption: AES256
+
+plugins: 
+  - sls-apigw-schema-plugin-test
+  
+functions: 
+
+  get-item:
+    handler: api/items/get.handler
+    schema:
+      pathParameters:
+        - 
+          name: id
+          description: Id of the item that you are looking for
+      responseModels: 
+        - 
+          statusCode: 200
+          responseModel: models/items/item.json
+          description: Item created
+        - 
+          statusCode: 400
+          responseModel: models/generic/error.json
+          description: Bad request
+        -
+          statusCode: 500
+          responseModel: models/generic/error.json
+          description: Internal server error    
+    events:
+      - http:
+          path: /items/{id}
+          method: get
+          cors: true
+      
+  create-item:
+    handler: api/items/create.handler
+    schema:
+      requestModel: 
+        model: models/items/create.json
+        validateRequest: true
+        description: Create a new item
+      responseModels: 
+        - 
+          statusCode: 201
+          responseModel: models/items/item.json
+          description: Item created
+        - 
+          statusCode: 400
+          responseModel: models/generic/error.json
+          description: Bad request
+        -
+          statusCode: 500
+          responseModel: models/generic/error.json
+          description: Internal server error
+    events:
+      - http:
+          path: /items
+          method: post
+          cors: true
+
+  list-items: 
+    handler: api/items/list.handler
+    schema: 
+      responseModels: 
+        - 
+          statusCode: 200
+          responseModel: models/items/list.json
+          description: List of items returned
+        - 
+          statusCode: 500
+          responseModel: models/generic/error.json
+          description: Internal server error
+    events:
+      - http:
+          path: /items
+          method: get
+          cors: true
