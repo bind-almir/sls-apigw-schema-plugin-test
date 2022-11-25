@@ -15,7 +15,7 @@ provider:
     serverSideEncryption: AES256
 
 plugins: 
-  - sls-apigw-schema-plugin-test
+  - sls-apigw-schema-plugin
   
 functions: 
 
