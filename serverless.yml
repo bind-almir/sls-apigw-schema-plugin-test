@@ -17,6 +17,17 @@ provider:
 plugins: 
   - sls-apigw-schema-plugin
   
+custom:
+  schema:
+    modelsPath: ./models/**/*.json
+    types: 
+      -    
+        language: typescript 
+        outputPath: ./types/mytypes.ts
+      - 
+        language: graphql 
+        outputPath: ./types/types.graphql
+
 functions: 
 
   get-item:

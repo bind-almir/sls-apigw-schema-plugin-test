@@ -4,16 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "types": "json2ts -i 'models/**/*.json' > 'types.ts'"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "sls-apigw-schema-plugin": "^0.0.1"
+    "sls-apigw-schema-plugin": "^0.0.2"
   },
   "dependencies": {
-    "json-schema-to-typescript": "^11.0.2"
   }
 }
